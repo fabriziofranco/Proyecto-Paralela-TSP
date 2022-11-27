@@ -20,7 +20,7 @@ vector<string> split(const string &s, char delim) {
 }
 
 
-vector<vector<pair<int,float>>> buildAdjMatrix(int N){
+adj_t buildAdjMatrix(int N){
     string line;
     vector<string> lines;
     string path = "data/";
@@ -44,7 +44,7 @@ vector<vector<pair<int,float>>> buildAdjMatrix(int N){
                                    atoi(point[2].c_str())));
         }
 
-        vector<vector<pair<int,float>>> adjMatrix;
+        adj_t adjMatrix;
         for (int i = 0; i < points.size(); i++){
             points[i].buildAdj(points);
             adjMatrix.push_back(points[i].adj);
@@ -56,10 +56,4 @@ vector<vector<pair<int,float>>> buildAdjMatrix(int N){
         cout << "Unable to open file";
         return vector<vector<pair<int,float>>>();
     }
-}
-
-
-int main(int argc, char *argv[]){
-    buildAdjMatrix(atoi(argv[1]));
-    return 0;
 }
