@@ -1,7 +1,7 @@
 all: test clean
 
 sequential:
-	g++ -o sequential.out branch_bound.cpp functions.h branch.h parser.h point.h
+	g++ -o sequential.out sequential.cpp functions.h branch.h parser.h point.h
 	./sequential.out
 
 
