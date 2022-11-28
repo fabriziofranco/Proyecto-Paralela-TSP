@@ -8,7 +8,7 @@
 Branch branch_bound(adj_t mt);
 
 int main(int argc, char *argv[]){
-    omp_set_num_threads(8);
+    omp_set_num_threads(2);
     string ws;
     cout<<"Desea correr el programa con los datos de demo? (s/n)"<<endl;
     cin>>ws;
