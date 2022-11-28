@@ -85,6 +85,6 @@ Branch branch_bound(adj_t mt){
         if (possible_solutions[i].cost < min_branch.cost)
             min_branch = possible_solutions[i];
     }
-    return current;
+    return min_branch;
     
 }
