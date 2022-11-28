@@ -14,7 +14,7 @@ int main(int argc, char *argv[]){
 
     if (ws == "N" or ws == "n"){
         int N=0;
-        cout<<"Entonces, ingrese el ID de dataset: "<<endl;
+        cout<<"Entonces, ingrese el ID de dataset: ";
         cin>>N;
         adjMt = buildAdjMatrix(N);
     }
@@ -39,7 +39,7 @@ int main(int argc, char *argv[]){
         return 1;
     }
     auto result = branch_bound(adjMt);
-    cout << result;
+    cout<< "Min path: " << result;
     return 0;
 }
 
@@ -48,7 +48,7 @@ int main(int argc, char *argv[]){
 Branch branch_bound(adj_t mt){
     auto temp = reduce_matrix(mt);
     float cost = temp.second;
-    cout << cost << endl << endl;
+    cout << "Reduccion inicial: "<<cost << endl;
     mt = temp.first;
     
     priority_queue<Branch, vector<Branch>, CompareBranch> branches;
@@ -61,15 +61,14 @@ Branch branch_bound(adj_t mt){
             if (current.adjMT[current.vertex][i].second == INFT) continue;
             auto tadj = fill_INF(current.adjMT, current.vertex, i);
             temp = reduce_matrix(tadj);
-            cout << i << "\t"  << current.cost+temp.second+current.adjMT[current.vertex][i].second << endl;
+            // cout << i << "\t"  << current.cost+temp.second+current.adjMT[current.vertex][i].second << endl;
             auto tpath = current.path;
             tpath.push_back(mt[i][i].first);
             branches.push(Branch{tpath, temp.first, current.cost+temp.second+current.adjMT[current.vertex][i].second, i});
         }
-        cout << endl;
         current = branches.top();
         branches.pop();
-        cout << current.cost << endl;
+        // cout << current.cost << endl;
 
         if (current.path.size() == mt.size()){
             possible_solutions.push_back(current);
@@ -78,14 +77,11 @@ Branch branch_bound(adj_t mt){
         }
     }
 
-    Branch min = possible_solutions[0];
+    Branch min_branch = possible_solutions[0];
     for(int i = 1; i < possible_solutions.size(); i++){
-        if (possible_solutions[i] < min.cost)
-            min = possible_solutions[i];
+        if (possible_solutions[i].cost < min_branch.cost)
+            min_branch = possible_solutions[i];
     }
-
-    cout << "Min path: \n\n" << min;
-
     return current;
     
 }

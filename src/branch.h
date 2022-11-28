@@ -16,13 +16,13 @@ ostream& operator<<(ostream& os, const Branch& br)
 {
     for (int v: br.path)  os << v << "\t";
     os << br.path[0] <<"\n" << "cost: " << br.cost << "\n";
-    for (size_t i = 0; i < br.adjMT.size(); i++)
+    /*for (size_t i = 0; i < br.adjMT.size(); i++)
     {
         for (size_t j = 0; j < br.adjMT.size(); j++){
             os << br.adjMT[i][j].second << "\t";
         }
     }
-    os << "\n";
+    os << "\n";*/
     return os;
 }
 
