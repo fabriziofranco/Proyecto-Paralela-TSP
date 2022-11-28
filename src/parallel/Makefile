@@ -1,7 +1,7 @@
 all: test clean
 
 run:
-	g++ -o parallel.out parallel.cpp functions.h branch.h parser.h point.h
+	g++ -fopenmp -o parallel.out parallel.cpp functions.h branch.h parser.h point.h
 	./parallel.out
 
 clean:

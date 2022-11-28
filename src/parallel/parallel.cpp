@@ -1,13 +1,14 @@
 #include "parser.h"
 #include "branch.h"
+#include <chrono>
 
-
-#include <omp>
+#include <omp.h>
 #include <queue>
 
 Branch branch_bound(adj_t mt);
 
 int main(int argc, char *argv[]){
+    omp_set_num_threads(8);
     string ws;
     cout<<"Desea correr el programa con los datos de demo? (s/n)"<<endl;
     cin>>ws;
@@ -39,8 +40,12 @@ int main(int argc, char *argv[]){
         cout << "Invalid argument";
         return 1;
     }
+    auto start_time = chrono::high_resolution_clock::now();
     auto result = branch_bound(adjMt);
+    auto end_time = chrono::high_resolution_clock::now();
+    auto time = chrono::duration_cast<chrono::microseconds>(end_time - start_time).count();
     cout<< "Min path: " << result;
+    cout << "Time: " << time << " microseconds" << endl;
     return 0;
 }
 
@@ -58,19 +63,21 @@ Branch branch_bound(adj_t mt){
     vector<Branch> possible_solutions;
 
     while (true){
-        #omp parallel for private(i, tpath, tadj, branches)
+        #pragma omp parallel for private(temp)
         for (int i = 0; i < mt.size(); i++){
             if (current.adjMT[current.vertex][i].second == INFT) continue;
             auto tadj = fill_INF(current.adjMT, current.vertex, i);
             temp = reduce_matrix(tadj);
-            // cout << i << "\t"  << current.cost+temp.second+current.adjMT[current.vertex][i].second << endl;
             auto tpath = current.path;
-            tpath.push_back(mt[i][i].first);
-            branches.push(Branch{tpath, temp.first, current.cost+temp.second+current.adjMT[current.vertex][i].second, i});
+            #pragma omp critical
+            {
+                tpath.push_back(mt[i][i].first);
+                branches.push(Branch{tpath, temp.first, current.cost+temp.second+current.adjMT[current.vertex][i].second, i});
+            }
         }
+
         current = branches.top();
         branches.pop();
-        // cout << current.cost << endl;
 
         if (current.path.size() == mt.size()){
             possible_solutions.push_back(current);
@@ -80,9 +87,11 @@ Branch branch_bound(adj_t mt){
     }
 
     Branch min_branch = possible_solutions[0];
+    #pragma omp parallel for private(min_branch)
     for(int i = 1; i < possible_solutions.size(); i++){
-        if (possible_solutions[i].cost < min_branch.cost)
+        if (possible_solutions[i].cost < min_branch.cost) {
             min_branch = possible_solutions[i];
+        }
     }
     return current;
     
