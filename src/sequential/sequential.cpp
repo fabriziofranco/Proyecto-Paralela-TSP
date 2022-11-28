@@ -1,7 +1,6 @@
 #include "parser.h"
 #include "branch.h"
-
-
+#include <chrono>
 #include <queue>
 
 Branch branch_bound(adj_t mt);
@@ -38,8 +37,12 @@ int main(int argc, char *argv[]){
         cout << "Invalid argument";
         return 1;
     }
+    auto start_time = chrono::high_resolution_clock::now();
     auto result = branch_bound(adjMt);
+    auto end_time = chrono::high_resolution_clock::now();
+    auto time = chrono::duration_cast<chrono::microseconds>(end_time - start_time).count();
     cout<< "Min path: " << result;
+    cout << "Time: " << time << " microseconds" << endl;
     return 0;
 }
 

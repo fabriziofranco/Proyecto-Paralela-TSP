@@ -27,7 +27,7 @@ vector<string> split(const string &s, char delim) {
 adj_t buildAdjMatrix(int N){
     string line;
     vector<string> lines;
-    string path = "data/";
+    string path = "../data/";
     ifstream myfile (path + to_string(N) + ".tsp");
 
     if (myfile.is_open()){
