@@ -1,3 +1,6 @@
+#ifndef PARSER_H
+#define PARSER_H
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -5,7 +8,8 @@
 #include <algorithm>
 #include <sstream>
 #include <math.h>
-#include "point.cpp"
+
+#include "functions.h"
 
 using namespace std;
 
@@ -57,3 +61,5 @@ adj_t buildAdjMatrix(int N){
         return vector<vector<pair<int,float>>>();
     }
 }
+
+#endif

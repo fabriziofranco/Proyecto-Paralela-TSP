@@ -1,8 +1,8 @@
 all: test clean
 
-test_parser:
-	g++ -o test_parser.out parser.cpp point.cpp
-	./test_parser.out  $(N)
+sequential:
+	g++ -o sequential.out branch_bound.cpp functions.h branch.h parser.h point.h
+	./sequential.out
 
 
 clean:

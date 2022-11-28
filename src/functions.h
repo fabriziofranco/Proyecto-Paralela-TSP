@@ -1,5 +1,8 @@
+#ifndef FUNCTIONS_H
+#define FUNCTIONS_H
+
 #include <vector>
-#include "point.cpp"
+#include "point.h"
 
 using namespace std;
 
@@ -15,7 +18,7 @@ float min_row(adj_t &mt, int row){
 
 float min_col(adj_t &mt, int col){
     float min = INFT;
-    for (size_t i = 0; i < mt.size(); i++)
+    for (size_t i = 0; i < mt[0].size(); i++)
     {
         if (mt[i][col].second < min) min = mt[i][col].second;
     }
@@ -31,9 +34,9 @@ pair<adj_t, float> reduce_matrix(adj_t &originalMatrix){
     for (size_t i = 0; i < rmatrix.size(); i++)
     {
         auto min_n = min_row(rmatrix, i);
-        if (min_n!=0 || min_n != INFT) 
+        if (min_n!=0 && min_n != INFT) 
         {
-            for (size_t j = 0; i < rmatrix[i].size(); j++)
+            for (size_t j = 0; j < rmatrix.size(); j++)
             {
                 rmatrix[i][j].second -= min_n; 
             }  
@@ -41,12 +44,12 @@ pair<adj_t, float> reduce_matrix(adj_t &originalMatrix){
         }        
     }
 
-    for (size_t i = 0; i < rmatrix[0].size(); i++)
+    for (size_t i = 0; i < rmatrix.size(); i++)
     {
-        auto min_n = min_col(originalMatrix, i);
-        if (min_n!=0 || min_n != INFT)
+        auto min_n = min_col(rmatrix, i);
+        if (min_n!=0 && min_n != INFT)
         {
-            for (size_t j = 0; i < rmatrix.size(); j++)
+            for (size_t j = 0; j < rmatrix.size(); j++)
             {
                 rmatrix[j][i].second -= min_n; 
             }  
@@ -55,3 +58,14 @@ pair<adj_t, float> reduce_matrix(adj_t &originalMatrix){
     }
     return make_pair(rmatrix, cost);
 }
+
+adj_t fill_INF(adj_t mt, int row, int col){
+    for (size_t i = 0; i < mt.size(); i++){
+        mt[i][col].second = INFT;
+        mt[row][i].second = INFT;
+    }
+    mt[col][row].second = INFT;
+    return mt;
+}
+
+#endif

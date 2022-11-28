@@ -1,3 +1,6 @@
+#ifndef POINT_H
+#define POINT_H
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -35,3 +38,5 @@ struct Point{
         }
     }
 };
+
+#endif
